@@ -26,8 +26,6 @@ class ResetScoreSubState extends MusicBeatSubstate
 		this.difficulty = difficulty;
 		this.week = week;
 
-                controls.isInSubstate = true;
-
 		super();
 
 		var name:String = song;
@@ -42,7 +40,7 @@ class ResetScoreSubState extends MusicBeatSubstate
 		add(bg);
 
 		var tooLong:Float = (name.length > 18) ? 0.8 : 1; //Fucking Winter Horrorland
-		var text:Alphabet = new Alphabet(0, 180, "Reset the score of", true);
+		var text:Alphabet = new Alphabet(0, 180, Language.getPhrase('reset_score', 'Reset the score of'), true);
 		text.screenCenter(X);
 		alphabetArray.push(text);
 		text.alpha = 0;
@@ -63,18 +61,16 @@ class ResetScoreSubState extends MusicBeatSubstate
 			add(icon);
 		}
 
-		yesText = new Alphabet(0, text.y + 150, 'Yes', true);
+		yesText = new Alphabet(0, text.y + 150, Language.getPhrase('Yes'), true);
 		yesText.screenCenter(X);
 		yesText.x -= 200;
 		add(yesText);
-		noText = new Alphabet(0, text.y + 150, 'No', true);
+		noText = new Alphabet(0, text.y + 150, Language.getPhrase('No'), true);
 		noText.screenCenter(X);
 		noText.x += 200;
 		add(noText);
-
-		addTouchPad("LEFT_RIGHT", "A_B");
-		addTouchPadCamera();
-
+		
+		for(letter in yesText.letters) letter.color = FlxColor.RED;
 		updateOptions();
 	}
 
@@ -97,7 +93,6 @@ class ResetScoreSubState extends MusicBeatSubstate
 		if(controls.BACK) {
 			FlxG.sound.play(Paths.sound('cancelMenu'), 1);
 			close();
-			controls.isInSubstate = false;
 		} else if(controls.ACCEPT) {
 			if(onYes) {
 				if(week == -1) {
@@ -107,12 +102,7 @@ class ResetScoreSubState extends MusicBeatSubstate
 				}
 			}
 			FlxG.sound.play(Paths.sound('cancelMenu'), 1);
-                        controls.isInSubstate = false;
 			close();
-		}
-		if (touchPad == null){ //sometimes it dosent add the tpad, hopefully this fixes it
-		addTouchPad("LEFT_RIGHT", "A_B");
-		addTouchPadCamera();
 		}
 		super.update(elapsed);
 	}
